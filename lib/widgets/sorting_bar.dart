@@ -31,7 +31,11 @@ class SortingBar extends StatelessWidget {
       height: value,
       decoration: BoxDecoration(
         color: barColor,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(8)),
       ),
     );
   }

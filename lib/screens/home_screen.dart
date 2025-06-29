@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
 import '../widgets/sorting_bar.dart';
 import '../algorithms/sorting_algorithms.dart';
 
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<int> _array = [];
-  int _arraySize = 50;
+  int _arraySize = 25;
   double _speed = 100;
   bool _isSorting = false;
   String _selectedAlgorithm = 'Bubble Sort';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _generateNewArray() {
     final rand = Random();
-    _array = List.generate(_arraySize, (_) => rand.nextInt(300) + 10);
+    _array = List.generate(_arraySize, (_) => rand.nextInt(150) + 10);
     setState(() {
       _targetedIndex = -1;
       _runningIndex = -1;
@@ -48,34 +49,53 @@ class _HomeScreenState extends State<HomeScreen> {
 
     switch (_selectedAlgorithm) {
       case 'Bubble Sort':
-        await bubbleSort(_array, (int target, int running) => setState(() {
-              _targetedIndex = target;
-              _runningIndex = running;
-            }), _speed.toInt());
+        await bubbleSort(
+            _array,
+            (int target, int running) => setState(() {
+                  _targetedIndex = target;
+                  _runningIndex = running;
+                }),
+            _speed.toInt());
         break;
       case 'Selection Sort':
-        await selectionSort(_array, (int target, int running) => setState(() {
-              _targetedIndex = target;
-              _runningIndex = running;
-            }), _speed.toInt());
+        await selectionSort(
+            _array,
+            (int target, int running) => setState(() {
+                  _targetedIndex = target;
+                  _runningIndex = running;
+                }),
+            _speed.toInt());
         break;
       case 'Insertion Sort':
-        await insertionSort(_array, (int target, int running) => setState(() {
-              _targetedIndex = target;
-              _runningIndex = running;
-            }), _speed.toInt());
+        await insertionSort(
+            _array,
+            (int target, int running) => setState(() {
+                  _targetedIndex = target;
+                  _runningIndex = running;
+                }),
+            _speed.toInt());
         break;
       case 'Merge Sort':
-        await mergeSort(_array, 0, _array.length - 1, (int target, int running) => setState(() {
-              _targetedIndex = target;
-              _runningIndex = running;
-            }), _speed.toInt());
+        await mergeSort(
+            _array,
+            0,
+            _array.length - 1,
+            (int target, int running) => setState(() {
+                  _targetedIndex = target;
+                  _runningIndex = running;
+                }),
+            _speed.toInt());
         break;
       case 'Quick Sort':
-        await quickSort(_array, 0, _array.length - 1, (int target, int running) => setState(() {
-              _targetedIndex = target;
-              _runningIndex = running;
-            }), _speed.toInt());
+        await quickSort(
+            _array,
+            0,
+            _array.length - 1,
+            (int target, int running) => setState(() {
+                  _targetedIndex = target;
+                  _runningIndex = running;
+                }),
+            _speed.toInt());
         break;
     }
 
@@ -135,7 +155,8 @@ class _HomeScreenState extends State<HomeScreen> {
             max: 300,
             divisions: 29,
             label: '${_speed.toInt()} ms',
-            onChanged: !_isSorting ? (value) => setState(() => _speed = value) : null,
+            onChanged:
+                !_isSorting ? (value) => setState(() => _speed = value) : null,
           ),
           const SizedBox(height: 16),
           Expanded(
@@ -152,6 +173,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   isRunning: index == _runningIndex,
                 );
               }).toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () async {
+                final url =
+                    Uri.parse('https://www.linkedin.com/in/umartanwar/');
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+              child: const Text(
+                'Made by Umar Tanwar',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],
