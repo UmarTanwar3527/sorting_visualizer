@@ -112,8 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sorting Visualizer'),
+        title: const Text(
+          'Sorting Visualizer',
+          style: TextStyle(fontSize: 30),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
